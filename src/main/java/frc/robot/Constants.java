@@ -4,11 +4,18 @@
 
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
 
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Vision;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -83,6 +90,47 @@ public final class Constants {
     public static int BOOST = 4;
   }
 
+  /** Vision configs */
+  public static class VisionConfigs {
+    /**
+     * Limelight camera
+     * The camera name must be the same as the name of the camera in the PhotonVision GUI
+     */
+    public static PhotonCamera limelight = new PhotonCamera("limelight");
+
+    /**
+     * Second camera (faced robot's back) plugged into Limelight's USB port
+     * The camera name must be the same as the name of the camera in the PhotonVision GUI
+     */
+    public static PhotonCamera backcam = new PhotonCamera("backcam");
+
+    /**
+     * Field layout file path
+     * The field layout file is from WPILib
+     */
+    public static final String fieldLayoutFile = AprilTagFields.k2023ChargedUp.m_resourceFile;
+
+    /**
+     * robotToLimelight 3D vector
+     * This 3D vector store the location of the robot in relative to the Limelight camera
+     * We haven't completed the real robot to test yet, so we put the example configuration
+     * here from PhotonVision library:
+     * 
+     * Cam mounted facing forward, half a meter forward of center, half a meter up from center
+     */
+    public static final Transform3d robotToLimelight = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
+
+    /**
+     * robotToLimelight 3D vector
+     * This 3D vector store the location of the robot in relative to the Limelight camera
+     * We haven't completed the real robot to test yet, so we put the example configuration
+     * here from PhotonVision library, but with modifications:
+     * 
+     * Cam mounted facing backward, half a meter backward of center, half a meter up from center
+     */
+    public static final Transform3d robotToBackCam = new Transform3d(new Translation3d(-0.5, 0.0, 0.5), new Rotation3d(0, 0, 180));
+  }
+
   /**
    * Subsystem instances
    * It's surely stupid to do this, but Roborio doesn't have that much RAM, so we need to
@@ -90,11 +138,13 @@ public final class Constants {
    * unification of subsystem instances :)  
    * 
    * Idea credit: KhiemGOM :)
-  */
+   */
   public static class SubsystemInstances {
     /** Drivebase subsystem instance */
     public static Drivebase DriveBaseInstance = new Drivebase();
     /** Gyro subsystem instance */
     public static Gyro GyroInstance = new Gyro();
+    /** Vision subsystem instance */
+    public static Vision VisionInstance = new Vision();
   }
 }
