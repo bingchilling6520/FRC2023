@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Gyro;
@@ -65,29 +66,42 @@ public final class Constants {
     public static Translation2d RIGHT_BACK_CENTER = new Translation2d();
   }
 
+  /**
+   * Constraints for PID controllers
+   */
+  public static class Constraints {
+    public static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
+    public static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
+    public static final TrapezoidProfile.Constraints THETA_CONSTRAINTS = new TrapezoidProfile.Constraints(8, 8);
+  }
+
   /** Controller button mapping */
   public static class ControllerMapping {
     // Joysticks
     
     /** First Joystick */
-    public static Joystick JOYSTICK0 = new Joystick(0);
+    public static final Joystick JOYSTICK0 = new Joystick(0);
     /** Second Joystick */
     public static Joystick JOYSTICK1 = new Joystick(1);
 
     // Axises
 
     /** X axis of the left joystick */
-    public static int XAXISLEFT = 0;
+    public static final int XAXISLEFT = 0;
     /** Y axis of the left joystick */
-    public static int YAXISLEFT = 1;
+    public static final int YAXISLEFT = 1;
     /** X axis of the right joystick */
-    public static int XAXISRIGHT = 4;
+    public static final int XAXISRIGHT = 4;
     /** Y axis of the right joystick */
-    public static int YAXISRIGHT = 5;
+    public static final int YAXISRIGHT = 5;
 
     // Buttons
     /** Boost speed button */
-    public static int BOOST = 4;
+    public static final int BOOST = 4;
+    /** Auto drive to scoring zone button */
+    public static final int DRIVE_TO_SCORE = 1;
+    /** Auto drive to double substation */
+    public static final int DRIVE_TO_SUBSTATION = 2;
   }
 
   /** Vision configs */
@@ -111,24 +125,36 @@ public final class Constants {
     public static final String fieldLayoutFile = AprilTagFields.k2023ChargedUp.m_resourceFile;
 
     /**
-     * robotToLimelight 3D vector
-     * This 3D vector store the location of the robot in relative to the Limelight camera
+     * ROBOT_TO_LIMELIGHT 3D vector
+     * This 3D vector stores the location of the robot in relative to the Limelight camera
      * We haven't completed the real robot to test yet, so we put the example configuration
      * here from PhotonVision library:
      * 
      * Cam mounted facing forward, half a meter forward of center, half a meter up from center
      */
-    public static final Transform3d robotToLimelight = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
+    public static final Transform3d ROBOT_TO_LIMELIGHT = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
 
     /**
-     * robotToLimelight 3D vector
-     * This 3D vector store the location of the robot in relative to the Limelight camera
+     * ROBOT_TO_BACKCAM 3D vector
+     * This 3D vector stores the location of the robot in relative to the Limelight camera
      * We haven't completed the real robot to test yet, so we put the example configuration
      * here from PhotonVision library, but with modifications:
      * 
      * Cam mounted facing backward, half a meter backward of center, half a meter up from center
      */
-    public static final Transform3d robotToBackCam = new Transform3d(new Translation3d(-0.5, 0.0, 0.5), new Rotation3d(0, 0, 180));
+    public static final Transform3d ROBOT_TO_BACKCAM = new Transform3d(new Translation3d(-0.5, 0.0, 0.5), new Rotation3d(0, 0, 180));
+
+    /**
+     * TAG_TO_GOAL 3D vector
+     * This 3D vector stores the location of the destination point the robot *will* go to in
+     * relative to the apriltag's location. We haven't completed the robot yet, so we are not
+     * sure how long exactly the robot hand will be, so we will just put a random value here
+     * But there are something to note (in this value):
+     * 
+     * - The robot dest point is to be 1m backward to the apriltag
+     * - Robot will face up with the apriltag, so yaw angle should be 180 degree
+     */
+    public static final Transform3d TAG_TO_GOAL = new Transform3d(new Translation3d(-1, 0.0, 0.0), new Rotation3d(0, 0, 180));
   }
 
   /**

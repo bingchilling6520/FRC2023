@@ -37,11 +37,11 @@ public class Vision extends SubsystemBase {
 
     // Create an array of camera objects and their 3D mount vectors.
     ArrayList<Pair<PhotonCamera, Transform3d>> camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
-    camList.add(new Pair<PhotonCamera, Transform3d>(limelight, robotToLimelight)); // First camera: limelight
-    camList.add(new Pair<PhotonCamera, Transform3d>(backcam, robotToBackCam)); // Second camera: camera faced backward
+    camList.add(new Pair<PhotonCamera, Transform3d>(limelight, ROBOT_TO_LIMELIGHT)); // First camera: limelight
+    //camList.add(new Pair<PhotonCamera, Transform3d>(backcam, ROBOT_TO_BACKCAM)); // Second camera: camera faced backward
     
     // Create robotPoseEstimator object
-    poseEstimator = new RobotPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, camList);
+    poseEstimator = new RobotPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, camList);
   }
 
   public Pose2d getPose2d() {
