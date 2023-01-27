@@ -36,10 +36,6 @@ public class DriveJoystick extends CommandBase {
     return sense(JOYSTICK0.getRawAxis(BOOST)) > 0 ? BOOST_SPEED : NORMAL_SPEED;
   }
 
-  private boolean norotatebutton() {
-    return sense(JOYSTICK0.getRawAxis(NOROTATE)) > 0;
-  }
-
   /**
    * Simplify angle
    * If angle > 180 degree -> minus 360 degree
@@ -128,8 +124,8 @@ public class DriveJoystick extends CommandBase {
       return;
     }
 
-    // If only right joystick moves -> only rotate inplace
-    if (leftX == 0 && leftY == 0 && (rightX != 0 || rightY != 0)) {
+    // If right joystick moves -> rotate inplace
+    if (rightX != 0 || rightY != 0) {
       // Turn to angle
       double angle = turnToAngle(rightX, rightY);
       
@@ -138,29 +134,24 @@ public class DriveJoystick extends CommandBase {
       SmartDashboard.putNumber("Right joystick angle", angle);
     }
 
-    // If only left joystick moves -> rotate and move according to the axis value
-    if ((leftX != 0 || leftY != 0) && rightX == 0 && rightY == 0) {
-      // Turn to angle if no rotate button not pressed
-      if (!norotatebutton()) {
-        double angle = turnToAngle(leftX, leftY);
+    // If left joystick moves -> move according to the axis values
+    if (leftX != 0 || leftY != 0) {
+      // Put to SmartDashboard
+      SmartDashboard.putNumber("Left joystick angle", 999);
+      SmartDashboard.putNumber("Right joystick angle", 999);
 
-        // Put value to SmartDashboard
-        SmartDashboard.putNumber("Left joystick angle", angle);
-        SmartDashboard.putNumber("Right joystick angle", 999);
-      }
+      // Calculate the coeeficients
+      double robotAngle = GyroInstance.getYaw();
+      double coefX = leftX * boostbutton();
+      double coefY = leftY * boostbutton();
+      double angleSin = Math.sin(robotAngle);
+      double angleCos = Math.cos(robotAngle);
 
-      else {
-        // Put value to SmartDashboard
-        SmartDashboard.putNumber("Left joystick angle", 999);
-        SmartDashboard.putNumber("Right joystick angle", 999);
-      }
-
-      // Drive according to the axis values
-      SmartDashboard.putNumber("X velocity", -leftX);
-      SmartDashboard.putNumber("Y velocity", -leftY);
-
-      // Drive
-      DriveBaseInstance.drive(-leftX * boostbutton(), -leftY * boostbutton(), 0);
+      // Calculate the X and Y velocity according to the current robot yaw and the joystick axises
+      // And drive
+      DriveBaseInstance.drive(-coefX * angleCos - coefY * angleSin,
+                              coefX * angleSin - coefY * angleCos,
+                              0);
     }
 
     // Reached target angle

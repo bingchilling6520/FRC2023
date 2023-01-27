@@ -112,11 +112,6 @@ public final class Constants {
     // Buttons
     /** Boost speed button */
     public static final int BOOST = 4;
-    /**
-     * NoRotate button
-     * Click this to only drive X and Y, not zR when drive using left joystick
-    */
-    public static final int NOROTATE = 3;
     /** Auto drive to scoring zone button */
     public static final int DRIVE_TO_SCORE = 1;
     /** Auto drive to double substation */
