@@ -42,6 +42,20 @@ public final class Constants {
     public static double BOOST_SPEED = 0.8;
   }
 
+  /** PID coefficients */
+  public static class PID {
+    /** Integral coefficient */
+    public static final double KI = 0.4;
+    /** Propotional coefficient */
+    public static final double KP = 0.3;
+    /** Derivative coefficient */
+    public static final double KD = 0.05;
+    /** Max positional error */
+    public static final double KTOLERANCE = 1.5;
+    /** Max velocity error */
+    public static final double KTOLERANCEVELOCITY = 0.8;
+  }
+
   /** CAN devices ID */
   public static class CAN_ID {
     /** Left Front Motor */
@@ -98,6 +112,11 @@ public final class Constants {
     // Buttons
     /** Boost speed button */
     public static final int BOOST = 4;
+    /**
+     * NoRotate button
+     * Click this to only drive X and Y, not zR when drive using left joystick
+    */
+    public static final int NOROTATE = 3;
     /** Auto drive to scoring zone button */
     public static final int DRIVE_TO_SCORE = 1;
     /** Auto drive to double substation */
@@ -153,8 +172,10 @@ public final class Constants {
      * 
      * - The robot dest point is to be 1m backward to the apriltag
      * - Robot will face up with the apriltag, so yaw angle should be 180 degree
+     * - Robot will be -0.6 meter compared to the apriltag (refer to manual)
+     *   It doesn't matter, because we will convert this to Pose2d and ignore the Z :)
      */
-    public static final Transform3d TAG_TO_GOAL = new Transform3d(new Translation3d(-1, 0.0, 0.0), new Rotation3d(0, 0, 180));
+    public static final Transform3d TAG_TO_GOAL = new Transform3d(new Translation3d(-1, 0.0, -0.6), new Rotation3d(0, 0, 180));
   }
 
   /**

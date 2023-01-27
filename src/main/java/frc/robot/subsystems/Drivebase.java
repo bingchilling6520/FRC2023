@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.CAN_ID.*;
@@ -54,6 +55,9 @@ public class Drivebase extends SubsystemBase {
 
   /** Drive in the Cartesian style */
   public void drive(double x, double y, double zR) {
+    SmartDashboard.putNumber("xSpeed", x);
+    SmartDashboard.putNumber("ySpeed", y);
+    SmartDashboard.putNumber("zRotation", zR);
     mecanum.driveCartesian(x, y, zR);
   }
 
@@ -76,5 +80,11 @@ public class Drivebase extends SubsystemBase {
     encoder.add(1, rightFront.getSelectedSensorPosition());
     encoder.add(2, leftBack.getSelectedSensorPosition());
     encoder.add(3, rightBack.getSelectedSensorPosition());
+
+    // Put to SmartDashboard
+    SmartDashboard.putNumber("Left front Talon temp", leftFront.getTemperature());
+    SmartDashboard.putNumber("Left back Talon temp", leftBack.getTemperature());
+    SmartDashboard.putNumber("Right front Talon temp", rightFront.getTemperature());
+    SmartDashboard.putNumber("Right back Talon temp", rightBack.getTemperature());
   }
 }
