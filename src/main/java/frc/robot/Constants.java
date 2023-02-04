@@ -105,9 +105,9 @@ public final class Constants {
     /** Y axis of the left joystick */
     public static final int YAXISLEFT = 1;
     /** X axis of the right joystick */
-    public static final int XAXISRIGHT = 4;
+    public static final int XAXISRIGHT = 5;
     /** Y axis of the right joystick */
-    public static final int YAXISRIGHT = 5;
+    public static final int YAXISRIGHT = 2;
 
     // Buttons
     /** Boost speed button */
